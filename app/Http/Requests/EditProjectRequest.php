@@ -31,7 +31,8 @@ class EditProjectRequest extends FormRequest
             ],
             'description' => 'required|max:255|min:10',
             'image' => 'required',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'technologies' => 'nullable|exists:technologies,id'
         ];
     }
 

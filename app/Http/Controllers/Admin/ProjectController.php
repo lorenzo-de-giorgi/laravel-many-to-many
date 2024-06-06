@@ -5,6 +5,7 @@ use APP\Http\Controllers\Controller;
 
 use App\Models\Project;
 use App\Models\Category;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\EditProjectRequest;
@@ -27,7 +28,8 @@ class ProjectController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.projects.create', compact('categories'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('categories', 'technologies'));
     }
 
     /**
@@ -43,6 +45,9 @@ class ProjectController extends Controller
             $form_data['image'] = $img_path;
         }
         $newPost = Project::create($form_data);
+        if ($request->has('technologies')) {
+            $newPost->technologies()->attach($request->technologies);
+        }
         // dd($form_data);
         // dd($newPost);
         return redirect()->route('admin.projects.show', $newPost->slug);
@@ -64,7 +69,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $categories = Category::all();
-        return view('admin.projects.edit', compact('project', 'categories'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'categories', 'technologies'));
     }
 
     /**
@@ -73,6 +79,10 @@ class ProjectController extends Controller
     public function update(EditProjectRequest $request, Project $project)
     {
         $form_data = $request->validated();
+        // DB::enableQueryLog();
+        $project->update($form_data);
+        // $query = DB::getQueryLog();
+        // dd($query);
         if ($project->title !== $form_data['title']) {
             $form_data['slug'] = Project::generateSlug($form_data['title']);
         }
@@ -82,11 +92,16 @@ class ProjectController extends Controller
             }
             $name = $request->image->getClientOriginalName();
             //dd($name);
-            $path = Storage::putFileAs('project_images', $request->image, $name);
+            $path = Storage::putFileAs('post_images', $request->image, $name);
             $form_data['image'] = $path;
         }
         // DB::enableQueryLog();
         $project->update($form_data);
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($request->technologies);
+        } else {
+            $project->technologies()->sync([]);
+        }
         // $query = DB::getQueryLog();
         // dd($query);
         return redirect()->route('admin.projects.show', $project->slug);
