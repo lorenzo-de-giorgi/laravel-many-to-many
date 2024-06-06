@@ -1,53 +1,27 @@
 @extends('layouts.admin')
-@section('title', 'Technologies')
+
+@section('title', 'Edit Technology')
 
 @section('content')
-<section>
-    @if(session()->has('message'))
-    <div class="alert alert-success">{{session()->get('message')}}</div>
-    @endif
-    <div class="d-flex justify-content-between align-items-center py-4">
-        <h1>Technologies</h1>
-        <a href="{{route('admin.technologies.create')}}" class="btn btn-primary">Crea nuovo project</a>
-    </div>
+    <section>
+        <h2>Edit Technology</h2>
+        <form action="{{ route('admin.technologies.update', $technology->slug) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="mb-3">
+                <label for="title" class="form-label">Nome</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
+                    value="{{ old('name', $technology->name) }}" minlength="3" maxlength="200">
+                @error('title')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div id="titleHelp" class="form-text text-white">Inserire minimo 3 caratteri e massimo 200</div>
+            </div>
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary">Conferma Modifica</button>
+                <button type="reset" class="btn btn-danger">Svuota campi</button>
+            </div>
+        </form>
+    </section>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Slug</th>
-              <th scope="col">Created At</th>
-              <th scope="col">Update At</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($technologies as $technology)
-            <tr>
-                <td>{{$technology->id}}</td>
-                <td>{{$technology->name}}</td>
-                <td>{{$technology->slug}}</td>
-                <td>{{$technology->created_at}}</td>
-                <td>{{$technology->updated_at}}</td>
-                <td>
-                    <a href="{{route('admin.technologies.show', $technology->slug)}}"><i class="fa-solid fa-eye"></i></a>
-                    <a href="{{route('admin.technologies.edit', $technology->slug)}}"><i class="fa-solid fa-pen"></i></a>
-                    <form action="{{route('admin.technologies.destroy', $technology->slug)}}" method="POST" class="d-inline-block">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="delete-button border-0 bg-transparent"  data-item-title="{{ $technology->title }}">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-
-                    </form>
-                </td>
-              </tr>
-            @endforeach
-
-
-          </tbody>
-      </table>
-</section>
-@include('partials.modal-delete')
 @endsection
