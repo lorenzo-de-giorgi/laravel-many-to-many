@@ -16,8 +16,8 @@
 
             </form>
         </div>
-
     </div>
+    <img class="w-50" src="{{asset('storage/'.$project->image)}}" alt="{{$project->title}}">
     <div>
         @if ($project->category)
             <h5>{{ $project->category->name }}</h5>
@@ -32,7 +32,6 @@
     </div>
 
     <p>{{$project->content}}</p>
-    <img class="w-50" src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">
 </section>
 @include('partials.modal-delete')
 @endsection

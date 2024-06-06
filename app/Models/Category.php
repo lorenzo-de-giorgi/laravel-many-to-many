@@ -12,7 +12,7 @@ class Category extends Model
     use HasFactory;
     protected $fillable = ['name', 'slug'];
 
-    public function posts()
+    public function projects()
     {
         return $this->hasMany(Project::class);
     }

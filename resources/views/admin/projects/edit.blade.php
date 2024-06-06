@@ -60,11 +60,10 @@
                 @foreach ($technologies as $technology)
                     <div>
                         <input type="checkbox" name="technologies[]" value="{{ $technology->id }}" class="form-check-input"
-                            {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}>
+                            {{ $project->technologies->contains($technology->id) ? 'checked' : '' }}>
                         <label for="" class="form-check-label">{{ $technology->name }}</label>
                     </div>
                 @endforeach
-
             </div>
             <div class="mb-3 text-center">
                 <button type="submit" class="btn btn-primary">Conferma Modifica</button>

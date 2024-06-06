@@ -33,10 +33,10 @@ class TechnologyController extends Controller
     {
         $form_data = $request->all();
         $form_data['slug'] = Technology::generateSlug($form_data['name']);
-        $newPost = Technology::create($form_data);
+        $newProject = Technology::create($form_data);
         // dd($form_data);
-        // dd($newPost);
-        return redirect()->route('admin.technologies.show', $newPost->slug);
+        // dd($newProject);
+        return redirect()->route('admin.technologies.show', $newProject->slug);
     }
 
     /**

@@ -44,13 +44,13 @@ class ProjectController extends Controller
             // dd($img_path);
             $form_data['image'] = $img_path;
         }
-        $newPost = Project::create($form_data);
+        $newProject = Project::create($form_data);
         if ($request->has('technologies')) {
-            $newPost->technologies()->attach($request->technologies);
+            $newProject->technologies()->attach($request->technologies);
         }
         // dd($form_data);
-        // dd($newPost);
-        return redirect()->route('admin.projects.show', $newPost->slug);
+        // dd($newProject);
+        return redirect()->route('admin.projects.show', $newProject->slug);
     }
 
     /** 
@@ -92,7 +92,7 @@ class ProjectController extends Controller
             }
             $name = $request->image->getClientOriginalName();
             //dd($name);
-            $path = Storage::putFileAs('post_images', $request->image, $name);
+            $path = Storage::putFileAs('project_images', $request->image, $name);
             $form_data['image'] = $path;
         }
         // DB::enableQueryLog();
