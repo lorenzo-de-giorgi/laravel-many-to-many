@@ -6,7 +6,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link {{Route::currentRouteName() == 'admin.index' ? 'active' : ''}}" aria-current="page"><i class="fa-solid fa-house-user"></i> Home</a>
+        <a href="{{ route('home') }}" class="nav-link {{Route::currentRouteName() == 'home' ? 'active' : ''}}" aria-current="page"><i class="fa-solid fa-house-user"></i> Home</a>
       </li>
       <li>
         <a href="{{route('admin.dashboard')}}" class="nav-link text-white {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : ''}}"><i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard</a>
