@@ -34,11 +34,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $form_data = $request->all();
-        $form_data["slug"] =  Project::generateSlug($form_data["name"]);
-        $new_Type = new Category();
-        $new_Type->fill($form_data);
-        $new_Type->save();
-        return redirect()->route("admin.categories.index");
+        $form_data['slug'] = Category::generateSlug($form_data['name']);
+        $newCategory = Category::create($form_data);
+        return redirect()->route('admin.categories.show', $newCategory->slug);
     }
 
     /**
@@ -54,7 +52,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -62,7 +60,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $form_data = $request->all();
+        // DB::enableQueryLog();
+        $category->update($form_data);
+        // $query = DB::getQueryLog();
+        // dd($query);
+        if ($category->name !== $form_data['name']) {
+            $form_data['slug'] = Category::generateSlug($form_data['name']);
+        }
+        // DB::enableQueryLog();
+        $category->update($form_data);
+        // $query = DB::getQueryLog();
+        // dd($query);
+        return redirect()->route('admin.categories.show', $category->slug);
     }
 
     /**
