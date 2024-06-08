@@ -18,8 +18,17 @@ $fa-font-path: "../webfonts" !default;
   display:flex;
 
   #sidebar{
-     background-color: $blue;
-     color: $black;
+    background-color: $blue;
+    color: $black;
+    height: 100%;
+    li{
+        a{
+            &:hover{
+                background-color: $blue;
+                transition: 0.2s;
+            }
+        }
+    }
   }
 
   #wrapper{
